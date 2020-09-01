@@ -18,22 +18,30 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: DataProvider()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primaryColor: Color(0xFFcc1db9),
-          accentColor: Color(0xFFFCAF58),
-          canvasColor: Colors.white70,
-          fontFamily: 'PTSans',
-          visualDensity: VisualDensity.adaptivePlatformDensity,
+      child: Consumer<DataProvider>(
+        builder: (ctx, data, _) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primaryColor: Color(0xFFcc1db9),
+            accentColor: Color(0xFFFCAF58),
+            canvasColor: Colors.white70,
+            fontFamily: 'PTSans',
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+          ),
+          home: FutureBuilder(
+            future: data.userDataFetch(),
+            builder: (ctx, authResultSnapShot) =>
+                authResultSnapShot.connectionState == ConnectionState.waiting
+                    ? LoadingScreen()
+                    : HomeScreen(),
+          ),
+          routes: {
+            HomeScreen.routeName: (ctx) => HomeScreen(),
+            UserScreen.routeName: (ctx) => UserScreen(),
+            UsersScreen.routeName: (ctx) => UsersScreen(),
+          },
         ),
-        home: LoadingScreen(),
-        routes: {
-          HomeScreen.routeName: (ctx) => HomeScreen(),
-          UserScreen.routeName: (ctx) => UserScreen(),
-          UsersScreen.routeName: (ctx) => UsersScreen(),
-        },
       ),
     );
   }

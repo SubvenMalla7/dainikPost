@@ -14,6 +14,21 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // var _isInt = true;
+  // var _isLoading = true;
+
+  // @override
+  // void didChangeDependencies() {
+  //   if (_isInt) {
+  //     Provider.of<DataProvider>(context, listen: false);
+  //     print(_isLoading);
+  //   }
+  //   _isInt = false;
+  //   _isLoading = false;
+
+  //   super.didChangeDependencies();
+  // }
+
   List<Map<String, Object>> _pages;
   int _selectedPageIndex = 0;
   @override

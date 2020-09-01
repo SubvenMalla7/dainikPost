@@ -27,8 +27,8 @@ class UsersScreen extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () => Navigator.of(context)
-                      .pushReplacementNamed(UserScreen.routeName),
+                  onTap: () =>
+                      Navigator.of(context).pushNamed(UserScreen.routeName),
                   child: Card(
                     elevation: 5,
                     child: Container(

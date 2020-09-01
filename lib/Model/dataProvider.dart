@@ -63,6 +63,15 @@ class DataProvider with ChangeNotifier {
 
   postDetail() {}
 
+  fetchData() {
+    // userDataFetch();
+    // print("hello World");
+    // // await postDetailData();
+    // // await postCommentsData();
+    // // await albumData();
+    // // await photoData();
+  }
+
   Future<void> userDataFetch() async {
     try {
       final respose = await http.get(url("users/"));
@@ -111,7 +120,7 @@ class DataProvider with ChangeNotifier {
       _userLocation = loadedUserLocation;
 
       print(_userInfo[0].id);
-
+      print("userinfo Done");
       notifyListeners();
     } catch (e) {
       print(e);
@@ -138,6 +147,7 @@ class DataProvider with ChangeNotifier {
     _postDetails = loadedPostDetails;
     print("object");
     print(_postDetails[9].id);
+    print("post Done");
     notifyListeners();
   }
 

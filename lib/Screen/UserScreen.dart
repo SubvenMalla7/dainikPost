@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:younginnovationinternship/Screen/UsersScreen.dart';
-import 'package:younginnovationinternship/Widgets/Post/buildPost.dart';
+import '../Widgets/Post/buildPost.dart';
 import '../Widgets/buildFlexibleSpaceBar.dart';
-import '../Widgets/userPost.dart';
 
 class UserScreen extends StatelessWidget {
   static const routeName = '/user';
@@ -23,8 +21,7 @@ class UserScreen extends StatelessWidget {
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
-          onPressed: () =>
-              Navigator.of(context).pushNamed(UsersScreen.routeName),
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: CustomScrollView(
@@ -34,6 +31,7 @@ class UserScreen extends StatelessWidget {
             elevation: 0,
             expandedHeight: screenSize.height * 0.35,
             centerTitle: true,
+            leading: Container(), // to remove back button
             flexibleSpace: buildFlexibleSpaceBar(
                 color, buildWorkAt(context, screenSize), context, screenSize),
           ),
@@ -45,7 +43,6 @@ class UserScreen extends StatelessWidget {
                 ],
               ),
             ),
-            // child: UserPosts(),
           )
         ],
       ),
