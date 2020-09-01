@@ -1,31 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:younginnovationinternship/Screen/UserScreen.dart';
+import 'package:younginnovationinternship/Widgets/Post/usersPostWidgets.dart';
 
 class UsersScreen extends StatelessWidget {
-  const UsersScreen({Key key}) : super(key: key);
-
+  static const routeName = '/users';
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final Color color = Theme.of(context).primaryColor;
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverAppBar(
-          forceElevated: true,
-          backgroundColor: Theme.of(context).primaryColor,
-          expandedHeight: screenSize.height * 0.25,
-          pinned: true,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20), bottom: Radius.circular(20)),
-                    color: color),
-                child: Center(
-                  child: Text("Users"),
-                )),
-          ),
-        ),
-      ],
+    return Scaffold(
+      body: Container(
+        child: Container(
+            height: screenSize.height * 0.2,
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  color: Colors.white,
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Users",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: screenSize.height * 0.05,
+                      fontFamily: 'PTSans',
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () => Navigator.of(context)
+                      .pushReplacementNamed(UserScreen.routeName),
+                  child: Card(
+                    elevation: 5,
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          userDetails(
+                              context,
+                              screenSize,
+                              Theme.of(context).primaryColor,
+                              screenSize.height * 0.035,
+                              screenSize.height * 0.030,
+                              "Bret",
+                              "Bret@bret.com"),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 12.0),
+                            child: Text(
+                              "Posts: 8",
+                              style: TextStyle(fontWeight: FontWeight.w900),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            )),
+      ),
     );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:younginnovationinternship/Screen/UserScreen.dart';
+import 'package:younginnovationinternship/Screen/UsersScreen.dart';
 import 'Model/dataProvider.dart';
 
 import './Screen/LoadingScreen.dart';
@@ -22,11 +24,15 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: Color(0xFFcc1db9),
           accentColor: Color(0xFFFCAF58),
+          canvasColor: Colors.white70,
+          fontFamily: 'PTSans',
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: LoadingScreen(),
         routes: {
           HomeScreen.routeName: (ctx) => HomeScreen(),
+          UserScreen.routeName: (ctx) => UserScreen(),
+          UsersScreen.routeName: (ctx) => UsersScreen(),
         },
       ),
     );
