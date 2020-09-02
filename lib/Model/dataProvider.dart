@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -70,6 +71,22 @@ class DataProvider with ChangeNotifier {
     // // await postCommentsData();
     // // await albumData();
     // // await photoData();
+  }
+
+  //shuffle post list
+
+  List shuffle(List items) {
+    var random = new Random();
+
+    for (var i = items.length - 1; i > 0; i--) {
+      var n = random.nextInt(i + 1);
+
+      var temp = items[i];
+      items[i] = items[n];
+      items[n] = temp;
+    }
+
+    return items;
   }
 
   Future<void> userDataFetch() async {
@@ -144,7 +161,8 @@ class DataProvider with ChangeNotifier {
             body: data["body"]));
       });
     }
-    _postDetails = loadedPostDetails;
+    var shuffledList = shuffle(loadedPostDetails);
+    _postDetails = shuffledList;
     print("object");
     print(_postDetails[9].id);
     print("post Done");
