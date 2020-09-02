@@ -191,6 +191,7 @@ class DataProvider with ChangeNotifier {
     }
     _album = loadedAlbums;
     print(_album[9].id);
+    print("album done");
     notifyListeners();
   }
 

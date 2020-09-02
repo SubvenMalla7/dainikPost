@@ -39,7 +39,7 @@ class UserScreen extends StatelessWidget {
             delegate: SliverChildBuilderDelegate(
               (context, i) => Column(
                 children: [
-                  buildPost(context, screenSize, color),
+                  // buildPost(context, screenSize, color),
                 ],
               ),
             ),

@@ -42,8 +42,8 @@ class UsersScreen extends StatelessWidget {
                               Theme.of(context).primaryColor,
                               screenSize.height * 0.035,
                               screenSize.height * 0.030,
-                              "Bret",
-                              "Bret@bret.com"),
+                              'name',
+                              'email'),
                           Padding(
                             padding: const EdgeInsets.only(right: 12.0),
                             child: Text(

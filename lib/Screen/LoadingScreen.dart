@@ -13,22 +13,22 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  // var _isInt = true;
+  var _isInt = true;
 
-  // void didChangeDependencies() async {
-  //   if (_isInt) {
-  //     await Provider.of<DataProvider>(context, listen: false).userDataFetch();
-  //     Provider.of<DataProvider>(context, listen: false).postDetailData();
-  //   }
-  //   _isInt = false;
+  void didChangeDependencies() async {
+    if (_isInt) {
+      await Provider.of<DataProvider>(context, listen: false).userDataFetch();
+      Provider.of<DataProvider>(context, listen: false).postDetailData();
+    }
+    _isInt = false;
 
-  //   super.didChangeDependencies();
-  // }
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
-      seconds: 0,
+      seconds: 6,
       backgroundColor: Colors.white,
       image: Image.asset("assets/image/loading.gif"),
       loaderColor: Theme.of(context).primaryColor,

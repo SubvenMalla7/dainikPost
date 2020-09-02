@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
-Widget userDetails(BuildContext context, Size screenSize, Color color,
-    double radi1, double radi2, String name, String email) {
+Widget userDetails(
+  BuildContext context,
+  Size screenSize,
+  Color color,
+  double radi1,
+  double radi2,
+  String name,
+  String email,
+) {
   return Row(
     children: [
       CircleAvatar(

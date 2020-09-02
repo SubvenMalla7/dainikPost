@@ -29,13 +29,7 @@ class MyApp extends StatelessWidget {
             fontFamily: 'PTSans',
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
-          home: FutureBuilder(
-            future: data.userDataFetch(),
-            builder: (ctx, authResultSnapShot) =>
-                authResultSnapShot.connectionState == ConnectionState.waiting
-                    ? LoadingScreen()
-                    : HomeScreen(),
-          ),
+          home: LoadingScreen(),
           routes: {
             HomeScreen.routeName: (ctx) => HomeScreen(),
             UserScreen.routeName: (ctx) => UserScreen(),

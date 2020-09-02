@@ -14,25 +14,29 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // var _isInt = true;
-  // var _isLoading = true;
+  var _isInt = true;
+  var _isLoading = true;
 
-  // @override
-  // void didChangeDependencies() {
-  //   if (_isInt) {
-  //     Provider.of<DataProvider>(context, listen: false);
-  //     print(_isLoading);
-  //   }
-  //   _isInt = false;
-  //   _isLoading = false;
+  @override
+  void didChangeDependencies() {
+    _isLoading = false;
 
-  //   super.didChangeDependencies();
-  // }
+    super.didChangeDependencies();
+  }
 
   List<Map<String, Object>> _pages;
   int _selectedPageIndex = 0;
   @override
   void initState() {
+    if (_isInt) {
+      // Provider.of<DataProvider>(context, listen: false).postDetailData();
+      // // Provider.of<DataProvider>(context, listen: false).postCommentsData();
+      // // Provider.of<DataProvider>(context, listen: false).albumData();
+      // // Provider.of<DataProvider>(context, listen: false).photoData();
+      print(_isLoading);
+    }
+    _isInt = false;
+    _isLoading = false;
     super.initState();
     _pages = [
       {
@@ -53,9 +57,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget build(BuildContext context) {
+    print(_isLoading);
     return SafeArea(
       child: Scaffold(
-        body: _pages[_selectedPageIndex]['page'],
+        body: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : _pages[_selectedPageIndex]['page'],
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             print("ToDo list pressed");
