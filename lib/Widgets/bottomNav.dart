@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 
 Widget bottomNav(context, changePage, currentIndex) {
   Color color1 = Theme.of(context).primaryColor;
+
   return BubbleBottomBar(
     opacity: 1.0,
-    backgroundColor: Colors.white24,
+    backgroundColor: Colors.white,
     currentIndex: currentIndex,
     onTap: changePage,
     borderRadius: BorderRadius.vertical(top: Radius.circular(16)),

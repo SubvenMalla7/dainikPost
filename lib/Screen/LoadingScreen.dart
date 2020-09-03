@@ -18,7 +18,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void didChangeDependencies() async {
     if (_isInt) {
       await Provider.of<DataProvider>(context, listen: false).userDataFetch();
-      Provider.of<DataProvider>(context, listen: false).postDetailData();
+      // Provider.of<DataProvider>(context, listen: false).postDetailData();
     }
     _isInt = false;
 

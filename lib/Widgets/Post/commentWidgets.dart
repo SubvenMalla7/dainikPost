@@ -34,7 +34,8 @@ Widget buildComments(BuildContext context, Size screenSize, Color color,
           child: Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-                color: Colors.black26, borderRadius: BorderRadius.circular(10)),
+                color: color.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(10)),
             child: Text(
               comments,
             ),

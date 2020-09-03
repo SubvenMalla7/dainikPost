@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../Model/dataProvider.dart';
 import '../Widgets/bottomNav.dart';
 import './PostsScreen.dart';
 import './UsersScreen.dart';
@@ -14,29 +12,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var _isInt = true;
-  var _isLoading = true;
-
   @override
-  void didChangeDependencies() {
-    _isLoading = false;
-
-    super.didChangeDependencies();
-  }
-
   List<Map<String, Object>> _pages;
   int _selectedPageIndex = 0;
+  final ScrollController controller = ScrollController();
   @override
   void initState() {
-    if (_isInt) {
-      // Provider.of<DataProvider>(context, listen: false).postDetailData();
-      // // Provider.of<DataProvider>(context, listen: false).postCommentsData();
-      // // Provider.of<DataProvider>(context, listen: false).albumData();
-      // // Provider.of<DataProvider>(context, listen: false).photoData();
-      print(_isLoading);
-    }
-    _isInt = false;
-    _isLoading = false;
     super.initState();
     _pages = [
       {
@@ -57,14 +38,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget build(BuildContext context) {
-    print(_isLoading);
     return SafeArea(
       child: Scaffold(
-        body: _isLoading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : _pages[_selectedPageIndex]['page'],
+        body: _pages[_selectedPageIndex]['page'],
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             print("ToDo list pressed");
