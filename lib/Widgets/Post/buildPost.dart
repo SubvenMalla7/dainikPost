@@ -9,39 +9,38 @@ Widget buildPost(
     String name,
     String email,
     String title,
-    String body}) {
-  return Card(
-    elevation: 8,
-    child: Container(
-      padding: const EdgeInsets.all(12),
-      child: Column(
-        children: [
-          userDetails(
-            context,
-            screenSize,
-            color,
-            screenSize.height * 0.030,
-            screenSize.height * 0.025,
-            name,
-            email,
+    String body,
+    int postID,
+    int id}) {
+  return Container(
+    margin: const EdgeInsets.symmetric(horizontal: 6),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(30),
+    ),
+    padding: const EdgeInsets.all(12),
+    child: Column(
+      children: [
+        userDetails(context, screenSize, color, screenSize.height * 0.030,
+            screenSize.height * 0.025, name, email, id),
+        Text(
+          title,
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: screenSize.height * 0.0225),
+          textAlign: TextAlign.center,
+        ),
+        Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Text(
+            body,
+            textAlign: TextAlign.left,
           ),
-          Text(
-            title,
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: screenSize.height * 0.0225),
-            textAlign: TextAlign.center,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Text(
-              body,
-              textAlign: TextAlign.left,
-            ),
-          ),
-          buildCommentsSections(screenSize, color),
-        ],
-      ),
+        ),
+        CommentsSection(
+          id: postID,
+        ),
+      ],
     ),
   );
 }

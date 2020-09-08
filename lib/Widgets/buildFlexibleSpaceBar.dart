@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:url_launcher/url_launcher.dart';
+import 'package:younginnovationinternship/Model/users.dart';
 
 Widget buildIconButton(
     BuildContext context, String text, IconData icon, Function launchWebsite) {
@@ -31,26 +32,32 @@ Widget buildIconButton(
   );
 }
 
-Widget buildWorkAt(BuildContext context, Size screenSize) {
+Widget buildWorkAt(BuildContext context, Size screenSize, String name,
+    String catchPhrase, String bs) {
   return Column(
     children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.business_center,
-              color: Colors.white, size: screenSize.height * 0.03),
-          SizedBox(
-            width: screenSize.height * 0.015,
-          ),
-          Text(
-            "Works at:",
-            style: TextStyle(
-                color: Colors.white, fontSize: screenSize.height * 0.03),
-          ),
-        ],
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.center,
+      //   children: [
+      //     Icon(Icons.business_center,
+      //         color: Colors.white, size: screenSize.height * 0.03),
+      //     SizedBox(
+      //       width: screenSize.height * 0.015,
+      //     ),
+      //     Text(
+      //       "Works at:",
+      //       style: TextStyle(
+      //           color: Colors.white, fontSize: screenSize.height * 0.03),
+      //     ),
+      //   ],
+      // ),
+      Icon(Icons.business_center,
+          color: Colors.white, size: screenSize.height * 0.03),
+      SizedBox(
+        width: screenSize.height * 0.010,
       ),
       Text(
-        "Romaguera-Crona",
+        name,
         style: TextStyle(
           color: Theme.of(context).accentColor,
           fontWeight: FontWeight.bold,
@@ -58,12 +65,12 @@ Widget buildWorkAt(BuildContext context, Size screenSize) {
         ),
       ),
       Text(
-        '"Multi-layered client-server neural-net"',
+        catchPhrase,
         style:
             TextStyle(color: Colors.white, fontSize: screenSize.height * 0.015),
       ),
       Text(
-        '"harness real-time e-markets"',
+        bs,
         style:
             TextStyle(color: Colors.white, fontSize: screenSize.height * 0.015),
       ),
@@ -72,43 +79,19 @@ Widget buildWorkAt(BuildContext context, Size screenSize) {
 }
 
 FlexibleSpaceBar buildFlexibleSpaceBar(
-    Color color, Column workAt, BuildContext context, Size screenSize) {
-  _launchURL() async {
-    print("object");
-    const url = 'https://www.google.com/maps/search/1,1';
+    int id,
+    Color color,
+    BuildContext context,
+    Size screenSize,
+    userInfo,
+    userAddress,
+    userCompany,
+    userLocation) {
+  _launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
       print("object");
-      throw 'Could not launch $url';
-    }
-  }
-
-  _launchWebsite() async {
-    print("object");
-    const url = 'https://www.hildegard.org';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      print("object");
-      throw 'Could not launch $url';
-    }
-  }
-
-  _makePhoneCall() async {
-    var url = 'tel:103';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  _makeMail() async {
-    var url = 'mailto:smith@example.org';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
       throw 'Could not launch $url';
     }
   }
@@ -119,69 +102,77 @@ FlexibleSpaceBar buildFlexibleSpaceBar(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(top: 20, bottom: 15),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CircleAvatar(
-                        radius: screenSize.height * 0.06,
-                        backgroundImage: AssetImage('assets/image/man.jpg'),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(
-                          "Leanne Graham",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: screenSize.height * 0.025,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.location_on,
-                              color: Theme.of(context).accentColor,
-                              size: screenSize.height * 0.02,
-                            ),
-                            InkWell(
-                              onTap: _launchURL,
-                              child: Text(
-                                "Gwenborough",
-                                style: TextStyle(
-                                  fontSize: screenSize.height * 0.02,
-                                  color: Theme.of(context).accentColor,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //   children: [
+            Container(
+              padding: const EdgeInsets.only(top: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: screenSize.height * 0.06,
+                    backgroundImage: AssetImage(id.isEven
+                        ? 'assets/image/woman.jpg'
+                        : 'assets/image/man.jpg'),
                   ),
-                ),
-                buildWorkAt(context, screenSize),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      userInfo.username,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: screenSize.height * 0.025,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            // SizedBox(
-            //   height: screenSize.height * 0.005,
+
+            //   ],
             // ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.location_on,
+                    color: Theme.of(context).accentColor,
+                    size: screenSize.height * 0.02,
+                  ),
+                  InkWell(
+                    onTap: () => _launchURL(
+                        'https://www.google.com/maps/search/${userLocation.lat},${userLocation.lng}'),
+                    child: Text(
+                      userAddress.city,
+                      style: TextStyle(
+                        fontSize: screenSize.height * 0.02,
+                        color: Theme.of(context).accentColor,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            buildWorkAt(context, screenSize, userCompany.name,
+                userCompany.catchPhrase, userCompany.bs),
+            SizedBox(
+              height: screenSize.height * 0.03,
+            ),
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  buildIconButton(context, "Email", Icons.email, _makeMail),
-                  buildIconButton(
-                      context, "Phone", Icons.phone, _makePhoneCall),
-                  buildIconButton(
-                      context, "Website", Icons.web, _launchWebsite),
+                  buildIconButton(context, "Email", Icons.email,
+                      () => _launchURL('mailto:${userInfo.email}')),
+                  buildIconButton(context, "Phone", Icons.phone,
+                      () => _launchURL('tel:${userInfo.phone}')),
+                  buildIconButton(context, "Website", Icons.web,
+                      () => _launchURL('https://${userInfo.website}')),
+                  buildIconButton(context, "Albums", Icons.photo_album, () {}),
                 ],
               ),
             )

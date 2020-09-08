@@ -8,6 +8,7 @@ Widget userDetails(
   double radi2,
   String name,
   String email,
+  int id,
 ) {
   return Row(
     children: [
@@ -15,9 +16,10 @@ Widget userDetails(
         backgroundColor: color,
         radius: radi1,
         child: CircleAvatar(
-          radius: radi2,
-          backgroundImage: AssetImage("assets/image/woman.jpg"),
-        ),
+            radius: radi2,
+            backgroundImage: id.isEven
+                ? AssetImage("assets/image/woman.jpg")
+                : AssetImage("assets/image/man.jpg")),
       ),
       SizedBox(
         width: screenSize.width * 0.04,
@@ -25,19 +27,27 @@ Widget userDetails(
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            name,
-            style: TextStyle(
-                fontSize: screenSize.height * 0.02,
-                color: color,
-                fontWeight: FontWeight.w600),
+          Container(
+            width: screenSize.width * 0.5,
+            child: Text(
+              name,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontSize: screenSize.height * 0.02,
+                  color: color,
+                  fontWeight: FontWeight.w600),
+            ),
           ),
-          Text(
-            email,
-            style: TextStyle(
-                fontSize: screenSize.height * 0.015,
-                color: Theme.of(context).accentColor,
-                fontWeight: FontWeight.w300),
+          Container(
+            width: screenSize.width * 0.5,
+            child: Text(
+              email,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontSize: screenSize.height * 0.015,
+                  color: Theme.of(context).accentColor,
+                  fontWeight: FontWeight.w300),
+            ),
           ),
         ],
       )

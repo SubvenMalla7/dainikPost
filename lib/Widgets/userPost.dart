@@ -27,9 +27,9 @@ class UserPosts extends StatelessWidget {
             ],
           ),
         ),
-        // body: TabBarView(
-        //   children: [UserPostScreen(), AlbumsScreen()],
-        // ),
+        body: TabBarView(
+          children: [UserPostScreen(), AlbumsScreen()],
+        ),
       ),
     );
   }

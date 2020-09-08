@@ -62,15 +62,11 @@ class DataProvider with ChangeNotifier {
   url(String link) =>
       "https://jsonplaceholder.typicode.com/$link"; //universal link
 
-  postDetail() {}
+  fetchData() async {
+    await userDataFetch();
 
-  fetchData() {
-    // userDataFetch();
-    // print("hello World");
-    // // await postDetailData();
-    // // await postCommentsData();
-    // // await albumData();
-    // // await photoData();
+    await postDetailData();
+    postCommentsData();
   }
 
   //shuffle post list
@@ -136,8 +132,8 @@ class DataProvider with ChangeNotifier {
       _userCompany = loadedUserCompany;
       _userLocation = loadedUserLocation;
 
-      print(_userInfo[0].id);
-      print("userinfo Done");
+      // print('is of users ${_userInfo[9].id}');
+      // print("userinfo Done");
       notifyListeners();
     } catch (e) {
       print(e);
@@ -145,7 +141,6 @@ class DataProvider with ChangeNotifier {
   }
 
   Future postDetailData() async {
-    print("object");
     final List<PostDetails> loadedPostDetails = []; //
     for (int i = 0; i < _userInfo.length; i++) {
       var userId = _userInfo[i].id;
@@ -161,22 +156,23 @@ class DataProvider with ChangeNotifier {
             body: data["body"]));
       });
     }
+
     var shuffledList = shuffle(loadedPostDetails);
     _postDetails = shuffledList;
-    print("object");
-    print(_postDetails[9].id);
-    print("post Done");
+
+    // print('is of post details${_postDetails[9].id}');
+    // print("post Done");
     notifyListeners();
   }
 
   Future postCommentsData() async {
-    print("comments");
     final List<PostComments> loadedPostComments = []; //
     for (int i = 0; i < _postDetails.length; i++) {
       var postDetailId = _postDetails[i].id;
 
       final response = await http.get(url("posts/$postDetailId/comments"));
       final extractedData = json.decode(response.body);
+
       extractedData.forEach((data) {
         loadedPostComments.add(PostComments(
           id: data["id"],
@@ -187,14 +183,15 @@ class DataProvider with ChangeNotifier {
         ));
       });
     }
+
     _postComments = loadedPostComments;
-    print("comments");
-    print(_postComments[9].id);
+    // print("comments");
+    // print('is of postComments ${_postComments[9].id}');
     notifyListeners();
   }
 
   Future albumData() async {
-    print("album");
+    // print("album");
     final List<Albums> loadedAlbums = []; //
     for (int i = 0; i < _userInfo.length; i++) {
       var userId = _postDetails[i].id;
@@ -208,13 +205,13 @@ class DataProvider with ChangeNotifier {
       });
     }
     _album = loadedAlbums;
-    print(_album[9].id);
-    print("album done");
+    // print('is of album ${_album[9].id}');
+    // print("album done");
     notifyListeners();
   }
 
   Future photoData() async {
-    print("album");
+    // print("album");
     final List<Photo> loadedPhoto = []; //
     for (int i = 0; i < _album.length; i++) {
       var albumId = _album[i].id;
@@ -228,7 +225,7 @@ class DataProvider with ChangeNotifier {
       });
     }
     _photo = loadedPhoto;
-    print(_photo[9].id);
+    // print('is of photoes${_photo[9].id}');
     notifyListeners();
   }
 }

@@ -12,13 +12,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  @override
   List<Map<String, Object>> _pages;
   int _selectedPageIndex = 0;
   final ScrollController controller = ScrollController();
   @override
   void initState() {
     super.initState();
+
     _pages = [
       {
         'page': PostsScreen(),

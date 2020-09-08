@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:younginnovationinternship/Model/dataProvider.dart';
+import 'package:younginnovationinternship/Widgets/mainUiWidget.dart';
 import '../Widgets/Post/buildPost.dart';
 
 class PostsScreen extends StatefulWidget {
@@ -9,21 +11,7 @@ class PostsScreen extends StatefulWidget {
 }
 
 class _PostsScreenState extends State<PostsScreen> {
-  var _isInt = true;
-  var _isLoading = true;
   final ScrollController _controller = ScrollController();
-
-  @override
-  void didChangeDependencies() async {
-    if (_isInt) {
-      await Provider.of<DataProvider>(context, listen: false).postDetailData();
-      Provider.of<DataProvider>(context, listen: false).postCommentsData();
-    }
-    _isInt = false;
-    _isLoading = false;
-
-    super.didChangeDependencies();
-  }
 
   void scrollToTop() {
     _controller.animateTo(0,
@@ -36,43 +24,72 @@ class _PostsScreenState extends State<PostsScreen> {
     final screenSize = MediaQuery.of(context).size;
     final userData = Provider.of<DataProvider>(context).userInfo;
     final postData = Provider.of<DataProvider>(context).postDetails;
-    print("length ${postData.length}");
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 1,
-        backgroundColor: Colors.white,
-        title: InkWell(
-          onTap: scrollToTop,
-          child: Text(
-            "Posts",
-            style: TextStyle(fontSize: screenSize.height * 0.04, color: color),
+
+    return buildMainUi(
+      context: context,
+      body: SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, i) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
+            child: buildPost(
+                context: context,
+                screenSize: screenSize,
+                color: color,
+                name: userData[postData[i].userId - 1].name,
+                email: userData[postData[i].userId - 1].email,
+                title: postData[i].title,
+                body: postData[i].body,
+                postID: postData[i].id,
+                id: userData[postData[i].userId - 1].id),
           ),
+          childCount: postData.length,
         ),
-        centerTitle: true,
       ),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Container(
-              margin: const EdgeInsets.all(12),
-              child: ListView.builder(
-                controller: _controller,
-                itemCount: postData.length,
-                itemBuilder: (BuildContext c, i) => Padding(
-                  padding: const EdgeInsets.only(bottom: 15),
-                  child: buildPost(
-                    context: context,
-                    screenSize: screenSize,
-                    color: color,
-                    name: userData[postData[i].userId - 1].name,
-                    email: userData[postData[i].userId - 1].email,
-                    title: postData[i].title,
-                    body: postData[i].body,
-                  ),
-                ),
-              ),
-            ),
+      heading: "Posts",
     );
+    // return Container(
+    //   color: Theme.of(context).primaryColor,
+    //   child: CustomScrollView(slivers: <Widget>[
+    //     SliverAppBar(
+    //       forceElevated: false,
+    //       elevation: 0,
+    //       expandedHeight: screenSize.height * 0.20,
+    //       centerTitle: true,
+    //       leading: Container(), // to remove back button
+    //       flexibleSpace: Container(
+    //         alignment: Alignment.centerLeft,
+    //         padding: const EdgeInsets.only(left: 18.0, top: 40, bottom: 20),
+    //         child: Text(
+    //           "Posts",
+    //           style: GoogleFonts.lato(
+    //             textStyle: TextStyle(
+    //               fontSize: screenSize.height * 0.07,
+    //               fontWeight: FontWeight.bold,
+    //               color: Colors.white,
+    //             ),
+    //           ),
+    //         ),
+    //       ),
+    //     ),
+    //     Container(
+    //       child: SliverList(
+    //           delegate: SliverChildBuilderDelegate(
+    //         (context, i) => Padding(
+    //           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
+    //           child: buildPost(
+    //               context: context,
+    //               screenSize: screenSize,
+    //               color: color,
+    //               name: userData[postData[i].userId - 1].name,
+    //               email: userData[postData[i].userId - 1].email,
+    //               title: postData[i].title,
+    //               body: postData[i].body,
+    //               id: userData[postData[i].userId - 1].id),
+    //         ),
+    //         childCount: postData.length,
+    //       )),
+    //     )
+    //   ]),
+    // );
   }
 }
