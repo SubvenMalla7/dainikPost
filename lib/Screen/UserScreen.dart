@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:younginnovationinternship/Model/dataProvider.dart';
+import 'package:younginnovationinternship/Model/users.dart';
 import '../Widgets/Post/buildPost.dart';
 import '../Widgets/buildFlexibleSpaceBar.dart';
 
@@ -32,8 +33,9 @@ class _UserScreenState extends State<UserScreen> {
     final Color color = Theme.of(context).primaryColor;
     final UserScreen args = ModalRoute.of(context).settings.arguments;
     final postDetail = Provider.of<DataProvider>(context).postDetails;
-    final filteredPost = postDetail.where((post) => post.userId == 1).toList();
-    print(' idddd${args.userInfo.id}');
+    final filteredPost =
+        postDetail.where((post) => post.userId == args.userInfo.id).toList();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(

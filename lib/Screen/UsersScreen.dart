@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:younginnovationinternship/Model/dataProvider.dart';
-import 'package:younginnovationinternship/Screen/UserScreen.dart';
-import 'package:younginnovationinternship/Widgets/Post/usersPostWidgets.dart';
-import 'package:younginnovationinternship/Widgets/buildFlexibleSpaceBar.dart';
-import 'package:younginnovationinternship/Widgets/mainUiWidget.dart';
+
+import '../Model/dataProvider.dart';
+import '../Screen/UserScreen.dart';
+import '../Widgets/Post/usersPostWidgets.dart';
+
+import '../Widgets/mainUiWidget.dart';
 
 class UsersScreen extends StatelessWidget {
   static const routeName = '/users';
@@ -31,7 +31,8 @@ class UsersScreen extends StatelessWidget {
             childCount: userData.userInfo.length,
           ),
         ),
-        heading: "Users");
+        heading: "Users",
+        padding: const EdgeInsets.only(left: 18.0, top: 40, bottom: 20));
   }
 }
 

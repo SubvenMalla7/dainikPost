@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:url_launcher/url_launcher.dart';
-import 'package:younginnovationinternship/Model/users.dart';
+import 'package:younginnovationinternship/Screen/AlbumsScreen.dart';
 
 Widget buildIconButton(
     BuildContext context, String text, IconData icon, Function launchWebsite) {
@@ -157,8 +156,13 @@ FlexibleSpaceBar buildFlexibleSpaceBar(
                 ],
               ),
             ),
-            buildWorkAt(context, screenSize, userCompany.name,
-                userCompany.catchPhrase, userCompany.bs),
+            buildWorkAt(
+              context,
+              screenSize,
+              userCompany.name,
+              userCompany.catchPhrase,
+              userCompany.bs,
+            ),
             SizedBox(
               height: screenSize.height * 0.03,
             ),
@@ -172,7 +176,15 @@ FlexibleSpaceBar buildFlexibleSpaceBar(
                       () => _launchURL('tel:${userInfo.phone}')),
                   buildIconButton(context, "Website", Icons.web,
                       () => _launchURL('https://${userInfo.website}')),
-                  buildIconButton(context, "Albums", Icons.photo_album, () {}),
+                  buildIconButton(
+                      context,
+                      "Albums",
+                      Icons.photo_album,
+                      () => Navigator.of(context)
+                          .pushNamed(AlbumsScreen.routeName,
+                              arguments: AlbumsScreen(
+                                userId: userInfo.id,
+                              ))),
                 ],
               ),
             )

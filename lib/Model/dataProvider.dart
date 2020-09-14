@@ -3,10 +3,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:younginnovationinternship/Model/photos.dart';
+// import 'package:path/path.dart';
+// import 'package:sqflite/sqflite.dart';
 
+import '../Model/photos.dart';
 import 'albums.dart';
-
 import 'post.dart';
 import 'users.dart';
 
@@ -63,10 +64,12 @@ class DataProvider with ChangeNotifier {
       "https://jsonplaceholder.typicode.com/$link"; //universal link
 
   fetchData() async {
+    print("post");
     await userDataFetch();
-
     await postDetailData();
     postCommentsData();
+    await albumData();
+    photoData();
   }
 
   //shuffle post list
@@ -87,15 +90,15 @@ class DataProvider with ChangeNotifier {
 
   Future<void> userDataFetch() async {
     try {
-      final respose = await http.get(url("users/"));
+      final respose = await http.get(url("users"));
       final extractedData = json.decode(respose.body);
+
       final List<UsersInfo> loadedUserInfo = [];
       final List<UserAddress> loadedUserAddress = [];
       final List<UserLocation> loadedUserLocation = [];
       final List<UserCompany> loadedUserCompany = [];
 
       extractedData.forEach((data) {
-        // print(data["address"]["street"]);
         loadedUserInfo.add(UsersInfo(
           id: data["id"],
           name: data["name"],
@@ -133,7 +136,7 @@ class DataProvider with ChangeNotifier {
       _userLocation = loadedUserLocation;
 
       // print('is of users ${_userInfo[9].id}');
-      // print("userinfo Done");
+      print("userinfo Done");
       notifyListeners();
     } catch (e) {
       print(e);
@@ -141,77 +144,88 @@ class DataProvider with ChangeNotifier {
   }
 
   Future postDetailData() async {
-    final List<PostDetails> loadedPostDetails = []; //
-    for (int i = 0; i < _userInfo.length; i++) {
-      var userId = _userInfo[i].id;
+    try {
+      final List<PostDetails> loadedPostDetails = []; //
+      for (int i = 0; i < _userInfo.length; i++) {
+        var userId = _userInfo[i].id;
 
-      final response = await http.get(url("users/$userId/posts"));
-      final extractedData = json.decode(response.body);
-      extractedData.forEach((data) {
-        // print(data["id"]);
-        loadedPostDetails.add(PostDetails(
-            id: data["id"],
-            userId: data["userId"],
-            title: data["title"],
-            body: data["body"]));
-      });
+        final response = await http.get(url("users/$userId/posts"));
+        final extractedData = json.decode(response.body);
+
+        extractedData.forEach((data) {
+          loadedPostDetails.add(PostDetails(
+              id: data["id"],
+              userId: data["userId"],
+              title: data["title"],
+              body: data["body"]));
+        });
+      }
+
+      var shuffledList = shuffle(loadedPostDetails);
+      _postDetails = shuffledList;
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
     }
 
-    var shuffledList = shuffle(loadedPostDetails);
-    _postDetails = shuffledList;
-
     // print('is of post details${_postDetails[9].id}');
-    // print("post Done");
-    notifyListeners();
+    print("post Done");
   }
 
   Future postCommentsData() async {
-    final List<PostComments> loadedPostComments = []; //
-    for (int i = 0; i < _postDetails.length; i++) {
-      var postDetailId = _postDetails[i].id;
+    try {
+      final List<PostComments> loadedPostComments = []; //
+      for (int i = 0; i < _postDetails.length; i++) {
+        var postDetailId = _postDetails[i].id;
 
-      final response = await http.get(url("posts/$postDetailId/comments"));
-      final extractedData = json.decode(response.body);
+        final response = await http.get(url("posts/$postDetailId/comments"));
+        final extractedData = json.decode(response.body);
 
-      extractedData.forEach((data) {
-        loadedPostComments.add(PostComments(
-          id: data["id"],
-          postId: data["postId"],
-          name: data["name"],
-          email: data["email"],
-          body: data["body"],
-        ));
-      });
+        extractedData.forEach((data) {
+          loadedPostComments.add(PostComments(
+            id: data["id"],
+            postId: data["postId"],
+            name: data["name"],
+            email: data["email"],
+            body: data["body"],
+          ));
+        });
+      }
+
+      _postComments = loadedPostComments;
+      // print("comments");
+      // print('is of postComments ${_postComments[9].id}');
+      notifyListeners();
+    } catch (e) {
+      print(e);
     }
-
-    _postComments = loadedPostComments;
-    // print("comments");
-    // print('is of postComments ${_postComments[9].id}');
-    notifyListeners();
   }
 
   Future albumData() async {
     // print("album");
     final List<Albums> loadedAlbums = []; //
     for (int i = 0; i < _userInfo.length; i++) {
-      var userId = _postDetails[i].id;
+      var userId = _userInfo[i].id;
 
       final response = await http.get(url("users/$userId/albums"));
       final extractedData = json.decode(response.body);
       extractedData.forEach((data) {
         loadedAlbums.add(Albums(
           id: data["id"],
+          title: data["title"],
+          userId: data["userId"],
         ));
       });
     }
     _album = loadedAlbums;
     // print('is of album ${_album[9].id}');
-    // print("album done");
+    print("album done");
     notifyListeners();
   }
 
   Future photoData() async {
-    // print("album");
+    print("album");
     final List<Photo> loadedPhoto = []; //
     for (int i = 0; i < _album.length; i++) {
       var albumId = _album[i].id;
@@ -220,12 +234,15 @@ class DataProvider with ChangeNotifier {
       final extractedData = json.decode(response.body);
       extractedData.forEach((data) {
         loadedPhoto.add(Photo(
-          id: data["id"],
-        ));
+            id: data["id"],
+            albumId: data["albumId"],
+            title: data["title"],
+            url: data["url"],
+            thumbnailUrl: data["thumbnailUrl"]));
       });
     }
     _photo = loadedPhoto;
-    // print('is of photoes${_photo[9].id}');
+    print('is of photoes${_photo[99].title}');
     notifyListeners();
   }
 }

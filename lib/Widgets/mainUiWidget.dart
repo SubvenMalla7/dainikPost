@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Widget buildMainUi({BuildContext context, String heading, Widget body}) {
+Widget buildMainUi(
+    {BuildContext context,
+    String heading,
+    Widget body,
+    EdgeInsetsGeometry padding}) {
   final screenSize = MediaQuery.of(context).size;
   return Container(
     color: Theme.of(context).primaryColor,
@@ -9,12 +13,23 @@ Widget buildMainUi({BuildContext context, String heading, Widget body}) {
       SliverAppBar(
         forceElevated: false,
         elevation: 0,
+        // pinned: true,
+        // title: Text(
+        //   heading,
+        //   style: GoogleFonts.lato(
+        //     textStyle: TextStyle(
+        //       fontSize: screenSize.height * 0.03,
+        //       fontWeight: FontWeight.bold,
+        //       color: Colors.white,
+        //     ),
+        //   ),
+        // ),
         expandedHeight: screenSize.height * 0.20,
         centerTitle: true,
-        leading: Container(), // to remove back button
+
         flexibleSpace: Container(
           alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.only(left: 18.0, top: 40, bottom: 20),
+          padding: padding,
           child: Text(
             heading,
             style: GoogleFonts.lato(

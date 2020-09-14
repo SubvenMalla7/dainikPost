@@ -1,8 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:younginnovationinternship/Model/dataProvider.dart';
+import '../../Model/dataProvider.dart';
 import '../Post/usersPostWidgets.dart';
 
 class CommentsSection extends StatefulWidget {

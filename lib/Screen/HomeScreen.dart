@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../Widgets/bottomNav.dart';
 import './PostsScreen.dart';
 import './UsersScreen.dart';
+import '../Screen/toDoListScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
@@ -42,9 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         body: _pages[_selectedPageIndex]['page'],
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            print("ToDo list pressed");
-          },
+          onPressed: () =>
+              Navigator.of(context).pushNamed(ToDoListScreen.routeName),
           child: Icon(
             Icons.assignment,
             color: Colors.white,
