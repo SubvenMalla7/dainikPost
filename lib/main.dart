@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
 
 import './Screen/AlbumsScreen.dart';
@@ -6,8 +7,8 @@ import './Screen/PhotosScreen.dart';
 import './Screen/UserScreen.dart';
 import './Screen/UsersScreen.dart';
 import './Screen/toDoListScreen.dart';
-import 'Model/dataProvider.dart';
-
+import 'providers/dataProvider.dart';
+import './Screen/PhotoView.dart';
 import './Screen/LoadingScreen.dart';
 import './Screen/HomeScreen.dart';
 
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
           ToDoListScreen.routeName: (ctx) => ToDoListScreen(),
           AlbumsScreen.routeName: (ctx) => AlbumsScreen(),
           PhotoScreen.routeName: (ctx) => PhotoScreen(),
+          PhotoViewScreen.routeName: (ctx) => PhotoViewScreen(),
         },
       ),
     );

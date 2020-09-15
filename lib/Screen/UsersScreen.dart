@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../Model/dataProvider.dart';
+import '../providers/dataProvider.dart';
 import '../Screen/UserScreen.dart';
 import '../Widgets/Post/usersPostWidgets.dart';
 
@@ -24,9 +24,6 @@ class UsersScreen extends StatelessWidget {
               email: userData.userInfo[i].email,
               id: userData.userInfo[i].id,
               userInfo: userData.userInfo[i],
-              userAddress: userData.userAddress[i],
-              userCompany: userData.userCompany[i],
-              userlocations: userData.userLocation[i],
             ),
             childCount: userData.userInfo.length,
           ),
@@ -61,37 +58,53 @@ class UserCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context).pushNamed(
-        UserScreen.routeName,
-        arguments: UserScreen(
-          userInfo: userInfo,
-          userAddress: userAddress,
-          userCompany: userCompany,
-          userlocations: userlocations,
-          id: id,
-        ),
-      ),
+      onTap: () => {
+        Navigator.of(context).push(
+          PageRouteBuilder<Null>(
+            pageBuilder: (BuildContext context, Animation<double> animation,
+                Animation<double> secondaryAnimation) {
+              return AnimatedBuilder(
+                  animation: animation,
+                  builder: (BuildContext context, Widget child) {
+                    return Opacity(
+                      opacity: animation.value,
+                      child: UserScreen(
+                        userInfo: userInfo,
+                        id: id,
+                      ),
+                    );
+                  });
+            },
+            transitionDuration: Duration(milliseconds: 600),
+          ),
+        )
+      },
       child: Card(
         shape: StadiumBorder(),
         elevation: 5,
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              userDetails(
-                  context,
-                  screenSize,
-                  Theme.of(context).primaryColor,
-                  screenSize.height * 0.053,
-                  screenSize.height * 0.050,
-                  name,
-                  email,
-                  id),
-              Padding(
-                  padding: const EdgeInsets.only(right: 12.0),
-                  child: Icon(Icons.arrow_forward_ios_rounded)),
-            ],
+        child: Hero(
+          tag: id,
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: userDetails(
+                      context,
+                      screenSize,
+                      Theme.of(context).primaryColor,
+                      screenSize.height * 0.053,
+                      screenSize.height * 0.050,
+                      name,
+                      email,
+                      id),
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(right: 12.0),
+                    child: Icon(Icons.arrow_forward_ios_rounded)),
+              ],
+            ),
           ),
         ),
       ),

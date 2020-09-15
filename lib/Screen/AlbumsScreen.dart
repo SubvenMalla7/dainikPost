@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:younginnovationinternship/Model/dataProvider.dart';
-import 'package:younginnovationinternship/Model/photos.dart';
-import 'package:younginnovationinternship/Screen/PhotosScreen.dart';
 
-import '../Widgets/buildAlbum.dart';
-
-import 'package:younginnovationinternship/Widgets/mainUiWidget.dart';
+import '../providers/dataProvider.dart';
+import '../Screen/PhotosScreen.dart';
+import '../Widgets/mainUiWidget.dart';
 
 class AlbumsScreen extends StatelessWidget {
   static const routeName = '/albumScreen';

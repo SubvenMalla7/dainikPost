@@ -1,46 +1,36 @@
 import 'dart:convert';
 import 'dart:math';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-// import 'package:path/path.dart';
-// import 'package:sqflite/sqflite.dart';
+import '../Model/toDoList.dart';
 
+import '../providers/sqlTableData.dart';
+import './db_provider.dart';
+import '../Model/users.dart';
 import '../Model/photos.dart';
-import 'albums.dart';
-import 'post.dart';
-import 'users.dart';
+import '../Model/albums.dart';
+import '../Model/post.dart';
 
 class DataProvider with ChangeNotifier {
+  var isInt = true;
   //creating array for data
   List<UsersInfo> _userInfo = [];
-
   List<UsersInfo> get userInfo {
     return [..._userInfo];
-  }
-
-  List<UserLocation> _userLocation = [];
-
-  List<UserLocation> get userLocation {
-    return [..._userLocation];
-  }
-
-  List<UserAddress> _userAddress = [];
-
-  List<UserAddress> get userAddress {
-    return [..._userAddress];
-  }
-
-  List<UserCompany> _userCompany = [];
-
-  List<UserCompany> get userCompany {
-    return [..._userCompany];
   }
 
   List<Albums> _album = [];
 
   List<Albums> get album {
     return [..._album];
+  }
+
+  List<ToDolist> _toDoList = [];
+
+  List<ToDolist> get toDoList {
+    return [..._toDoList];
   }
 
   List<Photo> _photo = [];
@@ -63,13 +53,29 @@ class DataProvider with ChangeNotifier {
   url(String link) =>
       "https://jsonplaceholder.typicode.com/$link"; //universal link
 
-  fetchData() async {
-    print("post");
+  fetchApi() async {
     await userDataFetch();
     await postDetailData();
-    postCommentsData();
     await albumData();
+    postCommentsData();
     photoData();
+  }
+
+  fetchDatabase() async {
+    await DBProvider().getInfo(_userInfo, UsersList, USERTABLE);
+    await DBProvider().getInfo(_postDetails, PostList, POSTTABLE);
+    await DBProvider().getInfo(_postComments, PostCommentsList, COMMENTTABLE);
+    await DBProvider().getInfo(_album, AlbumList, ALBUMTABLE);
+    await DBProvider().getInfo(_photo, PHOTOList, PHOTOTABLE);
+    await DBProvider().getInfo(_toDoList, ToDoList, TODOLIST);
+  }
+
+  fetchData() async {
+    var count = await DBProvider().getcount();
+    print("count $count");
+    var count1 = await DBProvider().getTodcount();
+    print("counttodo $count1");
+    count == 0 ? await fetchApi() : await fetchDatabase();
   }
 
   //shuffle post list
@@ -89,55 +95,38 @@ class DataProvider with ChangeNotifier {
   }
 
   Future<void> userDataFetch() async {
+    print("length ${_userInfo.length}");
+    print("fetching from api");
     try {
       final respose = await http.get(url("users"));
       final extractedData = json.decode(respose.body);
-
-      final List<UsersInfo> loadedUserInfo = [];
-      final List<UserAddress> loadedUserAddress = [];
-      final List<UserLocation> loadedUserLocation = [];
-      final List<UserCompany> loadedUserCompany = [];
+      final List<UsersInfo> loadedDetails = [];
 
       extractedData.forEach((data) {
-        loadedUserInfo.add(UsersInfo(
+        var usersInfo = UsersInfo(
           id: data["id"],
           name: data["name"],
           email: data["email"],
           username: data["username"],
           phone: data["phone"],
           website: data["website"],
-        ));
-      });
-      extractedData.forEach((data) {
-        loadedUserAddress.add(UserAddress(
           street: data["address"]["street"],
           suite: data["address"]["suite"],
           city: data["address"]["city"],
           zipcode: data["address"]["zipcode"],
-        ));
-      });
-      extractedData.forEach((data) {
-        loadedUserCompany.add(UserCompany(
-          name: data["company"]["name"],
+          companyName: data["company"]["name"],
           catchPhrase: data["company"]["catchPhrase"],
           bs: data["company"]["bs"],
-        ));
+          lat: data["address"]["geo"]["lat"],
+          lng: data["address"]["geo"]["lng"],
+        );
+        loadedDetails.add(usersInfo);
+        DBProvider().saveUserInfo(usersInfo);
       });
-
-      extractedData.forEach((data) {
-        loadedUserLocation.add(UserLocation(
-            lat: data["address"]["geo"]["lat"],
-            lng: data["address"]["geo"]["lng"]));
-      });
-
-      _userInfo = loadedUserInfo;
-      _userAddress = loadedUserAddress;
-      _userCompany = loadedUserCompany;
-      _userLocation = loadedUserLocation;
-
-      // print('is of users ${_userInfo[9].id}');
+      _userInfo = loadedDetails;
       print("userinfo Done");
       notifyListeners();
+      print("Length of user ${userInfo.length}");
     } catch (e) {
       print(e);
     }
@@ -153,14 +142,15 @@ class DataProvider with ChangeNotifier {
         final extractedData = json.decode(response.body);
 
         extractedData.forEach((data) {
-          loadedPostDetails.add(PostDetails(
+          var postDetails = PostDetails(
               id: data["id"],
               userId: data["userId"],
               title: data["title"],
-              body: data["body"]));
+              body: data["body"]);
+          loadedPostDetails.add(postDetails);
+          DBProvider().savePostDetail(postDetails);
         });
       }
-
       var shuffledList = shuffle(loadedPostDetails);
       _postDetails = shuffledList;
 
@@ -169,7 +159,7 @@ class DataProvider with ChangeNotifier {
       print(e);
     }
 
-    // print('is of post details${_postDetails[9].id}');
+    print('is of post details${_postDetails[9].id}');
     print("post Done");
   }
 
@@ -178,24 +168,24 @@ class DataProvider with ChangeNotifier {
       final List<PostComments> loadedPostComments = []; //
       for (int i = 0; i < _postDetails.length; i++) {
         var postDetailId = _postDetails[i].id;
-
+        print(i);
         final response = await http.get(url("posts/$postDetailId/comments"));
         final extractedData = json.decode(response.body);
 
         extractedData.forEach((data) {
-          loadedPostComments.add(PostComments(
+          var postComments = PostComments(
             id: data["id"],
             postId: data["postId"],
             name: data["name"],
             email: data["email"],
             body: data["body"],
-          ));
+          );
+          loadedPostComments.add(postComments);
+          DBProvider().savePostComment(postComments);
         });
       }
 
       _postComments = loadedPostComments;
-      // print("comments");
-      // print('is of postComments ${_postComments[9].id}');
       notifyListeners();
     } catch (e) {
       print(e);
@@ -203,7 +193,6 @@ class DataProvider with ChangeNotifier {
   }
 
   Future albumData() async {
-    // print("album");
     final List<Albums> loadedAlbums = []; //
     for (int i = 0; i < _userInfo.length; i++) {
       var userId = _userInfo[i].id;
@@ -211,15 +200,16 @@ class DataProvider with ChangeNotifier {
       final response = await http.get(url("users/$userId/albums"));
       final extractedData = json.decode(response.body);
       extractedData.forEach((data) {
-        loadedAlbums.add(Albums(
+        var albums = Albums(
           id: data["id"],
           title: data["title"],
           userId: data["userId"],
-        ));
+        );
+        loadedAlbums.add(albums);
+        DBProvider().saveAlbum(albums);
       });
     }
     _album = loadedAlbums;
-    // print('is of album ${_album[9].id}');
     print("album done");
     notifyListeners();
   }
@@ -233,12 +223,15 @@ class DataProvider with ChangeNotifier {
       final response = await http.get(url("albums/$albumId/photos"));
       final extractedData = json.decode(response.body);
       extractedData.forEach((data) {
-        loadedPhoto.add(Photo(
+        print(data);
+        var photo = Photo(
             id: data["id"],
             albumId: data["albumId"],
             title: data["title"],
             url: data["url"],
-            thumbnailUrl: data["thumbnailUrl"]));
+            thumbnailUrl: data["thumbnailUrl"]);
+        loadedPhoto.add(photo);
+        DBProvider().savePhoto(photo);
       });
     }
     _photo = loadedPhoto;

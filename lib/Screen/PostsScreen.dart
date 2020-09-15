@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:younginnovationinternship/Model/dataProvider.dart';
-import 'package:younginnovationinternship/Widgets/mainUiWidget.dart';
+
+import '../providers/dataProvider.dart';
+import '../Widgets/mainUiWidget.dart';
 import '../Widgets/Post/buildPost.dart';
 
 class PostsScreen extends StatefulWidget {
@@ -10,13 +11,6 @@ class PostsScreen extends StatefulWidget {
 }
 
 class _PostsScreenState extends State<PostsScreen> {
-  final ScrollController _controller = ScrollController();
-
-  void scrollToTop() {
-    _controller.animateTo(0,
-        duration: Duration(milliseconds: 500), curve: Curves.easeIn);
-  }
-
   @override
   Widget build(BuildContext context) {
     Color color = Theme.of(context).primaryColor;

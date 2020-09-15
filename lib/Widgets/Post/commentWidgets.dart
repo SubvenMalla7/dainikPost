@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../Model/dataProvider.dart';
+import 'package:shimmer/shimmer.dart';
+
+import '../../providers/dataProvider.dart';
 import '../Post/usersPostWidgets.dart';
 
 class CommentsSection extends StatefulWidget {
@@ -12,10 +14,6 @@ class CommentsSection extends StatefulWidget {
 }
 
 class _CommentsSectionState extends State<CommentsSection> {
-  var isInit = true;
-  var isLoading = true;
-
-  @override
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -23,7 +21,7 @@ class _CommentsSectionState extends State<CommentsSection> {
     final filteredComments =
         commentData.where((data) => data.postId == widget.id).toList();
     final postData = Provider.of<DataProvider>(context).postDetails;
-    print("the filter list $filteredComments");
+
     return Container(
       child: ExpansionTile(
         title: Text("Comments"),
@@ -31,8 +29,16 @@ class _CommentsSectionState extends State<CommentsSection> {
           Container(
             height: screenSize.height * 0.5,
             child: commentData.length == 0
-                ? Center(
-                    child: CircularProgressIndicator(),
+                ? Container(
+                    height: screenSize.height * 0.5,
+                    child: ListView.builder(
+                      itemCount: 10,
+                      itemBuilder: (context, index) => Shimmer.fromColors(
+                        baseColor: Colors.grey[400],
+                        highlightColor: Colors.white,
+                        child: ListItem(),
+                      ),
+                    ),
                   )
                 : ListView.builder(
                     itemCount: filteredComments.length,
@@ -73,11 +79,28 @@ Widget buildComments(BuildContext context, Size screenSize, Color color,
                 borderRadius: BorderRadius.circular(10)),
             child: Text(
               comments,
-              // overflow: TextOverflow.ellipsis,
             ),
           ),
         )
       ],
     ),
   );
+}
+
+class ListItem extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    return Container(
+        height: screenSize.height * 0.06,
+        margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Expanded(
+          child: Container(
+            color: Colors.grey,
+          ),
+        ));
+  }
 }

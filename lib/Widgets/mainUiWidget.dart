@@ -13,20 +13,9 @@ Widget buildMainUi(
       SliverAppBar(
         forceElevated: false,
         elevation: 0,
-        // pinned: true,
-        // title: Text(
-        //   heading,
-        //   style: GoogleFonts.lato(
-        //     textStyle: TextStyle(
-        //       fontSize: screenSize.height * 0.03,
-        //       fontWeight: FontWeight.bold,
-        //       color: Colors.white,
-        //     ),
-        //   ),
-        // ),
+        floating: true,
         expandedHeight: screenSize.height * 0.20,
         centerTitle: true,
-
         flexibleSpace: Container(
           alignment: Alignment.centerLeft,
           padding: padding,

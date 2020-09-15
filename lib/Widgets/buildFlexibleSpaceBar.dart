@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:younginnovationinternship/Screen/AlbumsScreen.dart';
+
+import '../Screen/AlbumsScreen.dart';
 
 Widget buildIconButton(
     BuildContext context, String text, IconData icon, Function launchWebsite) {
@@ -35,21 +36,6 @@ Widget buildWorkAt(BuildContext context, Size screenSize, String name,
     String catchPhrase, String bs) {
   return Column(
     children: [
-      // Row(
-      //   mainAxisAlignment: MainAxisAlignment.center,
-      //   children: [
-      //     Icon(Icons.business_center,
-      //         color: Colors.white, size: screenSize.height * 0.03),
-      //     SizedBox(
-      //       width: screenSize.height * 0.015,
-      //     ),
-      //     Text(
-      //       "Works at:",
-      //       style: TextStyle(
-      //           color: Colors.white, fontSize: screenSize.height * 0.03),
-      //     ),
-      //   ],
-      // ),
       Icon(Icons.business_center,
           color: Colors.white, size: screenSize.height * 0.03),
       SizedBox(
@@ -78,14 +64,12 @@ Widget buildWorkAt(BuildContext context, Size screenSize, String name,
 }
 
 FlexibleSpaceBar buildFlexibleSpaceBar(
-    int id,
-    Color color,
-    BuildContext context,
-    Size screenSize,
-    userInfo,
-    userAddress,
-    userCompany,
-    userLocation) {
+  int id,
+  Color color,
+  BuildContext context,
+  Size screenSize,
+  userInfo,
+) {
   _launchURL(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
@@ -109,11 +93,14 @@ FlexibleSpaceBar buildFlexibleSpaceBar(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  CircleAvatar(
-                    radius: screenSize.height * 0.06,
-                    backgroundImage: AssetImage(id.isEven
-                        ? 'assets/image/woman.jpg'
-                        : 'assets/image/man.jpg'),
+                  Hero(
+                    tag: id,
+                    child: CircleAvatar(
+                      radius: screenSize.height * 0.06,
+                      backgroundImage: AssetImage(id.isEven
+                          ? 'assets/image/woman.jpg'
+                          : 'assets/image/man.jpg'),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
@@ -143,9 +130,9 @@ FlexibleSpaceBar buildFlexibleSpaceBar(
                   ),
                   InkWell(
                     onTap: () => _launchURL(
-                        'https://www.google.com/maps/search/${userLocation.lat},${userLocation.lng}'),
+                        'https://www.google.com/maps/search/${userInfo.lat},${userInfo.lng}'),
                     child: Text(
-                      userAddress.city,
+                      userInfo.city,
                       style: TextStyle(
                         fontSize: screenSize.height * 0.02,
                         color: Theme.of(context).accentColor,
@@ -159,9 +146,9 @@ FlexibleSpaceBar buildFlexibleSpaceBar(
             buildWorkAt(
               context,
               screenSize,
-              userCompany.name,
-              userCompany.catchPhrase,
-              userCompany.bs,
+              userInfo.companyName,
+              userInfo.catchPhrase,
+              userInfo.bs,
             ),
             SizedBox(
               height: screenSize.height * 0.03,
@@ -177,14 +164,16 @@ FlexibleSpaceBar buildFlexibleSpaceBar(
                   buildIconButton(context, "Website", Icons.web,
                       () => _launchURL('https://${userInfo.website}')),
                   buildIconButton(
-                      context,
-                      "Albums",
-                      Icons.photo_album,
-                      () => Navigator.of(context)
-                          .pushNamed(AlbumsScreen.routeName,
-                              arguments: AlbumsScreen(
-                                userId: userInfo.id,
-                              ))),
+                    context,
+                    "Albums",
+                    Icons.photo_album,
+                    () => Navigator.of(context).pushNamed(
+                      AlbumsScreen.routeName,
+                      arguments: AlbumsScreen(
+                        userId: userInfo.id,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             )

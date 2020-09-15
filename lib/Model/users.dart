@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 
 class UsersInfo with ChangeNotifier {
-  final int id;
-  final String name;
-  final String username;
-  final String email;
-  final String phone;
-  final String website;
+  int id;
+  String name;
+  String username;
+  String email;
+  String phone;
+  String website;
+  String street;
+  String suite;
+  String city;
+  String zipcode;
+  String lat;
+  String lng;
+  String companyName;
+  String catchPhrase;
+  String bs;
 
   UsersInfo({
     this.id,
@@ -15,41 +24,87 @@ class UsersInfo with ChangeNotifier {
     this.email,
     this.phone,
     this.website,
-  });
-}
-
-class UserAddress with ChangeNotifier {
-  final String street;
-  final String suite;
-  final String city;
-  final String zipcode;
-
-  UserAddress({
     this.street,
     this.suite,
     this.city,
     this.zipcode,
-  });
-}
-
-class UserLocation with ChangeNotifier {
-  final String lat;
-  final String lng;
-
-  UserLocation({
     this.lat,
     this.lng,
-  });
-}
-
-class UserCompany with ChangeNotifier {
-  final String name;
-  final String catchPhrase;
-  final String bs;
-
-  UserCompany({
-    this.name,
+    this.companyName,
     this.catchPhrase,
     this.bs,
   });
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      "id": id,
+      "name": name,
+      "email": email,
+      "username": username,
+      "phone": phone,
+      "website": website,
+      "street": street,
+      "suite": suite,
+      "city": city,
+      "zipcode": zipcode,
+      "lat": lat,
+      "lng": lng,
+      "companyName": companyName,
+      "catchPhrase": catchPhrase,
+      "bs": bs,
+    };
+  }
+
+  UsersInfo.fromMap(Map<String, dynamic> map) {
+    id = map['id'];
+    name = map['name'];
+    email = map['email'];
+    phone = map['phone'];
+    username = map['username'];
+    website = map['website'];
+    street = map["street"];
+    suite = map["suite"];
+    city = map["city"];
+    zipcode = map["zipcode"];
+    lat = map["lat"];
+    lng = map["lng"];
+    companyName = map["companyName"];
+    catchPhrase = map["catchPhrase"];
+    bs = map["bs"];
+  }
 }
+
+// class UserAddress with ChangeNotifier {
+//   String street;
+//   String suite;
+//   String city;
+//   String zipcode;
+
+//   UserAddress({
+//     this.street,
+//     this.suite,
+//     this.city,
+//     this.zipcode,
+//   });
+// }
+
+// class UserLocation with ChangeNotifier {
+//   String lat;
+//   String lng;
+
+//   UserLocation({
+//     this.lat,
+//     this.lng,
+//   });
+// }
+
+// class UserCompany with ChangeNotifier {
+//   String name;
+//   String catchPhrase;
+//   String bs;
+
+//   UserCompany({
+//     this.name,
+//     this.catchPhrase,
+//     this.bs,
+//   });
+// }

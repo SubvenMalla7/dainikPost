@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:provider/provider.dart';
-import 'package:younginnovationinternship/Model/dataProvider.dart';
-import 'package:younginnovationinternship/Model/photos.dart';
-import 'package:younginnovationinternship/Widgets/mainUiWidget.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:younginnovationinternship/Screen/PhotoView.dart';
+
+import '../providers/dataProvider.dart';
+import '../Widgets/mainUiWidget.dart';
 
 class PhotoScreen extends StatelessWidget {
   static const routeName = "/photo";
@@ -16,7 +19,6 @@ class PhotoScreen extends StatelessWidget {
     final photoList = Provider.of<DataProvider>(context).photo;
     final filteredPhotoList =
         photoList.where((photo) => photo.albumId == args.albumId).toList();
-    print(filteredPhotoList.length);
     return SafeArea(
       child: Scaffold(
         body: buildMainUi(
@@ -30,19 +32,38 @@ class PhotoScreen extends StatelessWidget {
               mainAxisSpacing: 8.0,
             ),
             delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int i) => Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        image: DecorationImage(
-                            image:
-                                NetworkImage(filteredPhotoList[i].thumbnailUrl),
-                            fit: BoxFit.cover),
-                        borderRadius: BorderRadius.circular(20),
+                (BuildContext context, int i) => photoList.length == 0
+                    ? Shimmer.fromColors(
+                        baseColor: Colors.grey[400],
+                        highlightColor: Colors.white,
+                        child: Container(
+                          color: Colors.white,
+                          height: screenSize.height * 0.10,
+                          width: screenSize.height * 0.14,
+                          margin: const EdgeInsets.all(2),
+                        ),
+                      )
+                    : InkWell(
+                        onTap: () => Navigator.of(context)
+                            .pushNamed(PhotoViewScreen.routeName,
+                                arguments: PhotoViewScreen(
+                                  text: filteredPhotoList[i].title,
+                                  url: filteredPhotoList[i].url,
+                                )),
+                        child: Container(
+                          height: screenSize.height * 0.10,
+                          width: screenSize.height * 0.14,
+                          margin: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                    filteredPhotoList[i].thumbnailUrl),
+                                fit: BoxFit.cover),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
                       ),
-                      height: screenSize.height * 0.10,
-                      width: screenSize.height * 0.14,
-                      margin: const EdgeInsets.all(2),
-                    ),
                 childCount: filteredPhotoList.length),
           ),
         ),
